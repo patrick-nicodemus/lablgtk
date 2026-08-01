@@ -1,0 +1,49 @@
+(* $Id$ *)
+
+prefix "Gtk"
+initializer "ml_gtklistbox_init"
+
+header {
+open Gtk
+}
+
+oheader{
+open GtkListBoxProps
+}
+
+class ListBox set wrap wrapsig : Container {
+  "selection-mode"           GtkSelectionMode : Read / Write
+  "activate-on-single-click" gboolean         : Read / Write
+  method prepend : "[>`widget] obj -> unit"
+  method insert : "[>`widget] obj -> pos:int -> unit"
+  method get_selected_row : "list_box_row obj option"
+  method select_row : "[>`listboxrow] optobj -> unit"
+  method unselect_row : "[>`listboxrow] obj -> unit"
+  method select_all
+  method unselect_all
+  method get_row_at_index : "int -> list_box_row obj option"
+  method get_row_at_y : "int -> list_box_row obj option"
+  method set_placeholder : "[>`widget] optobj -> unit"
+  method invalidate_filter
+  method invalidate_sort
+  method invalidate_headers
+  method set_sort_func :
+    "(list_box_row obj -> list_box_row obj -> int) -> unit"
+  method set_filter_func : "(list_box_row obj -> bool) -> unit"
+  method set_header_func :
+    "(list_box_row obj -> list_box_row obj option -> unit) -> unit"
+  method selected_foreach : "(list_box_row obj -> unit) -> unit"
+  signal row_selected : GtkListBoxRow_opt
+  signal row_activated : GtkListBoxRow
+  signal selected_rows_changed
+  signal select_all
+  signal unselect_all
+}
+
+class ListBoxRow set wrap wrapsig : Bin {
+  "activatable" gboolean : Read / Write
+  "selectable"  gboolean : Read / Write
+  method get_index : "int"
+  method changed
+  signal activate
+}

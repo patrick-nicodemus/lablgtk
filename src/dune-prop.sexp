@@ -40,6 +40,10 @@
 ;  (action (run propcc %{dep:gtkList.props})))
 
 (rule
+ (targets gtkListBoxProps.ml ogtkListBoxProps.ml)
+ (action (run propcc %{dep:gtkListBox.props})))
+
+(rule
  (targets gtkMenuProps.ml ogtkMenuProps.ml)
  (action (run propcc %{dep:gtkMenu.props})))
 
