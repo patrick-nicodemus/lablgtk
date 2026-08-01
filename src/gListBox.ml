@@ -42,6 +42,10 @@ class list_box_row obj = object
   method as_row = (obj :> Gtk.list_box_row obj)
   method index = ListBoxRow.get_index obj
   method changed () = ListBoxRow.changed obj
+  method is_selected = ListBoxRow.is_selected obj
+  method header = may_map (ListBoxRow.get_header obj) ~f:(new widget)
+  method set_header (w : widget option) =
+    ListBoxRow.set_header obj (Gpointer.optboxed (may_map w ~f:as_widget))
 end
 
 let list_box_row ?activatable ?selectable =
@@ -61,6 +65,8 @@ class list_box obj = object
   method insert w ~pos = ListBox.insert obj (as_widget w) ~pos
   method get_selected_row =
     may_map (ListBox.get_selected_row obj) ~f:(new list_box_row)
+  method get_selected_rows =
+    List.map (new list_box_row) (ListBox.get_selected_rows obj)
   method select_row (r : list_box_row option) =
     ListBox.select_row obj (Gpointer.optboxed (may_map r ~f:(fun r -> r#as_row)))
   method unselect_row (r : list_box_row) = ListBox.unselect_row obj r#as_row
@@ -72,6 +78,11 @@ class list_box obj = object
     may_map (ListBox.get_row_at_y obj y) ~f:(new list_box_row)
   method set_placeholder (w : widget option) =
     ListBox.set_placeholder obj (Gpointer.optboxed (may_map w ~f:as_widget))
+  method adjustment =
+    may_map (ListBox.get_adjustment obj) ~f:(new GData.adjustment)
+  method set_adjustment (a : GData.adjustment option) =
+    ListBox.set_adjustment obj
+      (Gpointer.optboxed (may_map a ~f:GData.as_adjustment))
   method invalidate_filter () = ListBox.invalidate_filter obj
   method invalidate_sort () = ListBox.invalidate_sort obj
   method invalidate_headers () = ListBox.invalidate_headers obj

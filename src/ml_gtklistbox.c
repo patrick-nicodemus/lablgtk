@@ -62,6 +62,26 @@ CAMLprim value ml_gtk_list_box_get_selected_row(value lb)
   return Val_option(row, Val_GtkWidget);
 }
 
+CAMLprim value ml_gtk_list_box_get_selected_rows(value lb)
+{
+  CAMLparam1(lb);
+  CAMLlocal2(row, list);
+  GList *l, *head;
+  head = gtk_list_box_get_selected_rows(GtkListBox_val(lb));
+  l = g_list_last(head);
+  list = Val_emptylist;
+  while (l) {
+    row = Val_GtkWidget(l->data);
+    value cell = alloc_small(2, Tag_cons);
+    Field(cell, 0) = row;
+    Field(cell, 1) = list;
+    list = cell;
+    l = l->prev;
+  }
+  g_list_free(head);
+  CAMLreturn(list);
+}
+
 ML_2 (gtk_list_box_select_row, GtkListBox_val, GtkListBoxRow_val, Unit)
 ML_2 (gtk_list_box_unselect_row, GtkListBox_val, GtkListBoxRow_val, Unit)
 ML_1 (gtk_list_box_select_all, GtkListBox_val, Unit)
@@ -82,6 +102,15 @@ CAMLprim value ml_gtk_list_box_get_row_at_y(value lb, value y)
 }
 
 ML_2 (gtk_list_box_set_placeholder, GtkListBox_val, GtkWidget_val, Unit)
+
+CAMLprim value ml_gtk_list_box_get_adjustment(value lb)
+{
+  GtkAdjustment *adj = gtk_list_box_get_adjustment(GtkListBox_val(lb));
+  return Val_option(adj, Val_GtkAny);
+}
+
+ML_2 (gtk_list_box_set_adjustment, GtkListBox_val, GtkAdjustment_val, Unit)
+
 ML_1 (gtk_list_box_invalidate_filter, GtkListBox_val, Unit)
 ML_1 (gtk_list_box_invalidate_sort, GtkListBox_val, Unit)
 ML_1 (gtk_list_box_invalidate_headers, GtkListBox_val, Unit)
@@ -181,3 +210,12 @@ CAMLprim value ml_gtk_list_box_selected_foreach(value lb, value f)
 
 ML_1 (gtk_list_box_row_get_index, GtkListBoxRow_val, Val_int)
 ML_1 (gtk_list_box_row_changed, GtkListBoxRow_val, Unit)
+ML_1 (gtk_list_box_row_is_selected, GtkListBoxRow_val, Val_bool)
+
+CAMLprim value ml_gtk_list_box_row_get_header(value row)
+{
+  GtkWidget *header = gtk_list_box_row_get_header(GtkListBoxRow_val(row));
+  return Val_option(header, Val_GtkWidget);
+}
+
+ML_2 (gtk_list_box_row_set_header, GtkListBoxRow_val, GtkWidget_val, Unit)

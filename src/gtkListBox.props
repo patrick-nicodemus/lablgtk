@@ -17,6 +17,7 @@ class ListBox set wrap wrapsig : Container {
   method prepend : "[>`widget] obj -> unit"
   method insert : "[>`widget] obj -> pos:int -> unit"
   method get_selected_row : "list_box_row obj option"
+  method get_selected_rows : "list_box_row obj list"
   method select_row : "[>`listboxrow] optobj -> unit"
   method unselect_row : "[>`listboxrow] obj -> unit"
   method select_all
@@ -24,6 +25,8 @@ class ListBox set wrap wrapsig : Container {
   method get_row_at_index : "int -> list_box_row obj option"
   method get_row_at_y : "int -> list_box_row obj option"
   method set_placeholder : "[>`widget] optobj -> unit"
+  method get_adjustment : "adjustment obj option"
+  method set_adjustment : "[>`adjustment] optobj -> unit"
   method invalidate_filter
   method invalidate_sort
   method invalidate_headers
@@ -45,5 +48,8 @@ class ListBoxRow set wrap wrapsig : Bin {
   "selectable"  gboolean : Read / Write
   method get_index : "int"
   method changed
+  method is_selected : "bool"
+  method get_header : "widget obj option"
+  method set_header : "[>`widget] optobj -> unit"
   signal activate
 }

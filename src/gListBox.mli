@@ -47,6 +47,9 @@ class list_box_row : ([> Gtk.list_box_row] as 'a) obj ->
     method as_row : Gtk.list_box_row obj
     method index : int
     method changed : unit -> unit
+    method is_selected : bool
+    method header : widget option
+    method set_header : widget option -> unit
     method activatable : bool
     method set_activatable : bool -> unit
     method selectable : bool
@@ -91,6 +94,7 @@ class list_box : ([> Gtk.list_box] as 'a) obj ->
     method prepend : widget -> unit
     method insert : widget -> pos:int -> unit
     method get_selected_row : list_box_row option
+    method get_selected_rows : list_box_row list
     method select_row : list_box_row option -> unit
     method unselect_row : list_box_row -> unit
     method select_all : unit -> unit
@@ -98,6 +102,8 @@ class list_box : ([> Gtk.list_box] as 'a) obj ->
     method get_row_at_index : int -> list_box_row option
     method get_row_at_y : int -> list_box_row option
     method set_placeholder : widget option -> unit
+    method adjustment : GData.adjustment option
+    method set_adjustment : GData.adjustment option -> unit
     method invalidate_filter : unit -> unit
     method invalidate_sort : unit -> unit
     method invalidate_headers : unit -> unit
