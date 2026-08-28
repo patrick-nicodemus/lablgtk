@@ -822,13 +822,13 @@ let process_file f =
        out "@]@.end\n@.");
   close_out oc;
   (* Output classes *)
-  if !ooutfile = "" then ooutfile := "o" ^ !outfile;
+  if !ooutfile = "" then ooutfile := "o" ^ Filename.basename !outfile;
   let oc = open_out !ooutfile in
   let ppf = Format.formatter_of_out_channel oc in
   let out fmt = Format.fprintf ppf fmt in
   List.iter !oheaders ~f:(fun s -> out "%s@." s);
   out "open %s@."
-    (String.capitalize_ascii (Filename.chop_extension !outfile));
+    (String.capitalize_ascii (Filename.chop_extension (Filename.basename !outfile)));
   out "@[<hv>";
   let oprop ~name ~gtype ppf pname =
     try
